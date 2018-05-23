@@ -1,40 +1,25 @@
 package com.example.gensis.diceroller;
 
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.gensis.dice.Dice;
 
-import org.w3c.dom.Text;
+
 
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageButton dice20;
-    private ImageButton dice4;
-    private ImageButton dice6;
-    private ImageButton dice8;
-    private ImageButton dice12;
-    private ImageButton dice10;
+
     private TextView diceName;
-    private TextView number;
 
-    private Dice dice = new Dice();
-    private ArrayList<ImageButton> buttonList = new ArrayList<>();
-    private String[] diceNames = {"d4", "d6", "d8", "d10", "d12", "d20"};
+    private ArrayList<Dice> buttonList = new ArrayList<>();
     private int counter = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,81 +28,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //No manual Edit of Dice Result possible
-        number = findViewById(R.id.diceNumber);
+        TextView number = findViewById(R.id.diceNumber);
         number.setKeyListener(null);
 
         //No Edit of DiceName Possible
         diceName = findViewById(R.id.TextName);
         diceName.setKeyListener(null);
 
+        //dice objects
 
-        //setting onClick Events for Buttons -------------------------------------------------------
+        Dice dice4 = new Dice(4, "d4", (ImageButton) findViewById(R.id.diceButtonD4), number);
+        Dice dice6 = new Dice(6, "d6", (ImageButton) findViewById(R.id.diceButtonD6), number);
+        Dice dice8 = new Dice(8, "d8", (ImageButton) findViewById(R.id.diceButtonD8), number);
+        Dice dice10 = new Dice(10, "d10", (ImageButton) findViewById(R.id.diceButtonD10), number);
+        Dice dice12 = new Dice(12, "d12", (ImageButton) findViewById(R.id.diceButtonD12), number);
+        Dice dice20 = new Dice(20, "d20", (ImageButton) findViewById(R.id.diceButtonD20), number);
 
-        dice6 = findViewById(R.id.diceButtonD6);
-        dice6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                number.setText(dice.diceRoll(6));
-            }
-        });
-
-        dice4 = findViewById(R.id.diceButtonD4);
-        dice4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                number.setText(dice.diceRoll(4));
-
-
-            }
-        });
-
-        dice8 = findViewById(R.id.diceButtonD8);
-        dice8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                number.setText(dice.diceRoll(8));
-
-            }
-        });
-
-
-        dice10 = findViewById(R.id.diceButtonD10);
-        dice10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                number.setText(dice.diceRoll(10));
-
-
-            }
-        });
-
-        dice12 = findViewById(R.id.diceButtonD12);
-        dice12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                number.setText(dice.diceRoll(12));
-
-
-            }
-        });
-
-        dice20 = findViewById(R.id.diceButtonD20);
-        dice20.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                number.setText(dice.diceRoll(20));
-
-
-            }
-        });
-
-        // -----------------------------------------------------------------------------------------
-
-        //adding image buttons to array list
+        //adding dice objects to array list
         buttonList.add(dice4);
         buttonList.add(dice6);
         buttonList.add(dice8);
@@ -141,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     counter = 0;
                 }
 
-                buttonList.get(intermediate).setVisibility(View.INVISIBLE);
-                buttonList.get(counter).setVisibility(View.VISIBLE);
-                diceName.setText(diceNames[counter]);
+                arrowClick(intermediate);
 
             }
         });
@@ -158,15 +83,22 @@ public class MainActivity extends AppCompatActivity {
                     counter = 5;
                 }
 
-                buttonList.get(intermediate).setVisibility(View.INVISIBLE);
-                buttonList.get(counter).setVisibility(View.VISIBLE);
-                diceName.setText(diceNames[counter]);
+                arrowClick(intermediate);
 
             }
         });
 
 
-        }
+    }
+
+    //adding arrow click event
+
+    public void arrowClick(int pIntermediate){
+
+        buttonList.get(pIntermediate).diceImage.setVisibility(View.INVISIBLE);
+        buttonList.get(counter).diceImage.setVisibility(View.VISIBLE);
+        diceName.setText(buttonList.get(counter).diceText);
 
     }
 
+}
